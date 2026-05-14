@@ -19,5 +19,20 @@ def init_db():
         """)
 
     conn.commit()
-
     conn.close()
+
+def show_message(input_mood):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT output_message from mood_messages
+    WHERE mood = ?
+    """), (input_mood,)
+
+    message = cursor.fetchall()
+
+    cursor.close()
+    conn.close
+
+    return message
