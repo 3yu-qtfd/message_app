@@ -4,6 +4,7 @@ DB_NAME = "message_app.db"
 
 def get_connection():
     conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
@@ -21,18 +22,21 @@ def init_db():
     conn.commit()
     conn.close()
 
-def show_message(input_mood):
+def select_message(input_mood):
+    print(input_mood)
+
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT output_message from mood_messages
+    SELECT output_message FROM mood_messages
     WHERE mood = ?
-    """), (input_mood,)
+    """,(input_mood,)
+    )
 
-    message = cursor.fetchall()
+    result = cursor.fetchone()
 
     cursor.close()
-    conn.close
+    conn.close()
 
-    return message
+    return result

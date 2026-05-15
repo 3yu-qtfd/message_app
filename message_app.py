@@ -1,28 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for
-from database import init_db, show_message
+from database import init_db, select_message
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
+    return render_template("index.html")
+
+    #init_db()
+
+@app.route("/result", methods=["POST"])
+def result():
     if request.method == "POST":
 
-        #気分をセット
+        #画面で選択した「気分」をセット
         input_mood = request.form["mood"]
 
-        #気分をDBに受け渡し
-        select_message(input_mood)
+        #input_moodをDBに受け渡し、その結果を受け取る
+        result = select_message(input_mood)
 
-        return redirect(url_for("index"))
-
-    elif request.method == "GET":
-
-        #init_db()
-
-        returned_message = show_message()
-
+        #選ばれたメッセージをHTMLに渡す
         return render_template(
-                "index.html",
-                message=returned_message)
+                "result.html",
+                result=result)
+
+        #return redirect(url_for("index"))
 
 app.run(host="0.0.0.0")
