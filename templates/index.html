@@ -7,5 +7,19 @@
 <body>
 	<h1>This is the Message App</h1>
 	<p>メッセージのアプリ</p>
+
+	<form action="/result" method="POST">
+		<label for="mood">今の気分を選んでください</label>
+
+		<select name="mood" id="mood">
+			<option value="happy">嬉しい</option>
+			<option value="sad">悲しい</option>
+			<option value="anxious">不安</option>
+			<option value="tired">疲れた</option>
+		</select>
+
+		<button type="submit">送信</button>
+	</form>
+
 </body>
 </html>
