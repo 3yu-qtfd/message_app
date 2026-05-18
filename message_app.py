@@ -26,4 +26,4 @@ def result():
 
         #return redirect(url_for("index"))
 
-app.run(host="0.0.0.0")
+#app.run(host="0.0.0.0")
