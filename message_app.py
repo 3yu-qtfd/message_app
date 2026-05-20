@@ -1,13 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
-from database import init_db, select_message
+from mysql import init_db, select_message
 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
-
-    #init_db()
 
 @app.route("/result", methods=["POST"])
 def result():
@@ -24,6 +22,6 @@ def result():
                 "result.html",
                 result=result)
 
-        #return redirect(url_for("index"))
+#init_db()
 
-#app.run(host="0.0.0.0")
+app.run(host="0.0.0.0")
