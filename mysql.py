@@ -1,14 +1,21 @@
 import pymysql
+import os
+from dotenv import load_dotenv
 
+#同じディレクトリ内の.envを読み込む
+load_dotenv()
+
+#データベース接続処理
 def get_connection():
     return pymysql.connect(
-        host='message-app-rds.ct8wi4gaezip.ap-northeast-1.rds.amazonaws.com',
-        user='admin',
-        password='',
-        database='message_app',
+        host=os.environ.get("DB_HOST"),
+        user=os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASS"),
+        database=os.environ.get("DATABASE"),
         cursorclass=pymysql.cursors.DictCursor
     )
 
+#テーブル作成処理（初回のみ実行）
 def init_db():
     connection = get_connection()
 
@@ -29,6 +36,7 @@ def init_db():
     finally:
         connection.close()
 
+#input_moodの値に応じてメッセージを返す処理
 def select_message(input_mood):
     connection = get_connection()
 
@@ -54,5 +62,3 @@ def select_message(input_mood):
 
     finally:
         connection.close()
-
-
