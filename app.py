@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from mysql import init_db, write_diary
+from mysql import init_db, write_diary, show_diary
 
 app = Flask(__name__)
 
@@ -18,6 +18,10 @@ def result():
 
 #init_db()
 
-    return render_template("index.html")
+    returned_record = show_diary()
+
+    return render_template(
+        "index.html",
+        records=returned_record)
 
 app.run(host="0.0.0.0")

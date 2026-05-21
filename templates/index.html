@@ -24,5 +24,23 @@
 		<button type="submit">送信</button>
 	</form>
 
+	<h2>日記一覧</h2>
+
+	<p>{{ records|length }} 件</p>
+
+	<table border="1">
+		<tr>
+				<th>記録日</th>
+				<th>気持ち</th>
+				<th>日記</th>
+		</tr>
+
+		{% for record in records %}
+		<tr>
+			<td>{{record.created_at}}</td>
+			<td>{{record.mood}}</td>
+			<td>{{record.content}}</td>
+		</tr>
+		{% endfor %}
 </body>
 </html>

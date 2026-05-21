@@ -39,7 +39,7 @@ def init_db():
     finally:
         connection.close()
 
-#気持ち・日記の登録処理
+#INSERT
 def write_diary(input_mood, input_content):
     connection = get_connection()
 
@@ -58,5 +58,25 @@ def write_diary(input_mood, input_content):
 
             connection.commit()
 
+    finally:
+        connection.close()
+
+#SELECT
+def show_diary():
+    connection = get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+
+            sql = """
+            SELECT created_at, mood, content
+            FROM diary
+            """
+
+            cursor.execute(sql)
+
+            fetched_record = cursor.fetchall()
+            return fetched_record
+    
     finally:
         connection.close()
