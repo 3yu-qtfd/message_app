@@ -20,6 +20,7 @@
 		</select>
 
 		<input type="text" name="content">
+		<input type="hidden" name="action" value="insert">
 
 		<button type="submit">送信</button>
 	</form>
@@ -40,6 +41,13 @@
 			<td>{{record.created_at}}</td>
 			<td>{{record.mood}}</td>
 			<td>{{record.content}}</td>
+			<td>
+				<form method="POST">
+					<input type="hidden" name="delete_id" value="{{ record.id }}">
+					<input type="hidden" name="action" value="delete">
+                	<button type="submit">削除</button>
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 </body>

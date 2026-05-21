@@ -69,14 +69,34 @@ def show_diary():
         with connection.cursor() as cursor:
 
             sql = """
-            SELECT created_at, mood, content
-            FROM diary
+            SELECT * FROM `diary`
             """
-
             cursor.execute(sql)
 
             fetched_record = cursor.fetchall()
             return fetched_record
+    
+    finally:
+        connection.close()
+
+#DELETE
+def delete_diary(delete_id):
+    connection = get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+
+            sql = """
+            DELETE FROM `diary`
+            WHERE `id` = %s
+            """
+
+            #デバッグ
+            print(f"入力値: {delete_id}")
+
+            cursor.execute(sql, (delete_id,))
+
+            connection.commit()
     
     finally:
         connection.close()
