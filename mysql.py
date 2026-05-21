@@ -23,10 +23,13 @@ def init_db():
         with connection.cursor() as cursor:
 
             sql = """
-            CREATE TABLE IF NOT EXISTS mood_messages (
+            CREATE TABLE IF NOT EXISTS diary (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 mood VARCHAR(50) NOT NULL,
-                output_message TEXT NOT NULL
+                content TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                mail_sent BOOLEAN DEFAULT FALSE
                 )
                 """
             cursor.execute(sql)
@@ -36,29 +39,24 @@ def init_db():
     finally:
         connection.close()
 
-#input_moodの値に応じてメッセージを返す処理
-def select_message(input_mood):
+#気持ち・日記の登録処理
+def write_diary(input_mood, input_content):
     connection = get_connection()
 
     try:
         with connection.cursor() as cursor:
 
             sql = """
-            SELECT output_message
-            FROM mood_messages
-            WHERE mood = %s
+            INSERT INTO `diary` (`mood`, `content`)
+            VALUES(%s, %s)
             """
             #デバッグ
             print(f"入力値: {input_mood}")
-            
-            cursor.execute(sql, (input_mood,))
+            print(f"入力値: {input_content}")
 
-            result = cursor.fetchone()
+            cursor.execute(sql, (input_mood, input_content))
 
-            #デバッグ
-            print(f"SQL結果: {result}")
-
-            return result
+            connection.commit()
 
     finally:
         connection.close()

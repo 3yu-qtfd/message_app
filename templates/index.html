@@ -2,22 +2,24 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Message App</title>
+	<title>Diary App</title>
 </head>
 
 <body>
-	<h1>This is the Message App</h1>
-	<p>メッセージのアプリ</p>
+	<h1>Tell me how you feel</h1>
+	<p>自分の気持ちを記録しよう</p>
 
-	<form action="/result" method="POST">
-		<label for="mood">今の気分を選んでください</label>
+	<form method="POST">
+		<label>今日の記録：</label>
 
 		<select name="mood" id="mood">
 			<option value="happy">嬉しい</option>
+			<option value="relaxed">リラックス</option>
 			<option value="sad">悲しい</option>
 			<option value="anxious">不安</option>
-			<option value="tired">疲れた</option>
 		</select>
+
+		<input type="text" name="content">
 
 		<button type="submit">送信</button>
 	</form>
