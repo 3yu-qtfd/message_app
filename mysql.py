@@ -90,11 +90,25 @@ def delete_diary(delete_id):
             DELETE FROM `diary`
             WHERE `id` = %s
             """
-
-            #デバッグ
-            print(f"入力値: {delete_id}")
-
             cursor.execute(sql, (delete_id,))
+
+            connection.commit()
+    
+    finally:
+        connection.close()
+
+#UPDATE
+def update_diary(update_content, update_id):
+    connection = get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+            UPDATE `diary`
+            SET `content` = %s
+            WHERE `id` = %s
+            """
+            cursor.execute(sql, (update_content, update_id))
 
             connection.commit()
     

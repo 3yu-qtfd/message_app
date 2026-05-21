@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from mysql import init_db, write_diary, show_diary, delete_diary
+from mysql import init_db, write_diary, show_diary, delete_diary, update_diary
 
 app = Flask(__name__)
 
@@ -26,6 +26,13 @@ def result():
 
             #delete_idをDBの関数delete_diaryに渡す
             delete_diary(delete_id)
+
+        elif action == "update":
+            update_id = request.form["update_id"]
+
+            update_content = request.form["update_content"]
+
+            update_diary(update_content, update_id)
 
     #テーブル作成
     #init_db()
