@@ -1,4 +1,4 @@
-# message_app
+# diary_app
 
 ## 技術スタック
 フロントエンド：HTML
