@@ -3,9 +3,6 @@
 - 独自ドメイン名で公開＋HTTPS対応
 - 現在、アクセス元を制限しています
 
-![top-page](./images/top.png)
-![list-page](./images/list.png)
-
 ## 技術スタック
 - フロントエンド：HTML
 - バックエンド：Python Flask
@@ -15,4 +12,8 @@
 
 ## 構成図
 ![diagram](./images/diagram.png)
+
+## 画面イメージ
+![top-page](./images/top.png)
+![list-page](./images/list.png)
 
