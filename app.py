@@ -37,4 +37,4 @@ def delete(id):
 
     return redirect(url_for("list"))
 
-app.run(host="0.0.0.0")
+#app.run(host="0.0.0.0")
