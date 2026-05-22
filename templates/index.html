@@ -9,7 +9,7 @@
 	<h1>Tell me how you feel</h1>
 	<p>自分の気持ちを記録しよう</p>
 
-	<form method="POST">
+	<form action="/write" method="POST">
 		<label>今日の記録：</label>
 
 		<select name="mood" id="mood">
@@ -20,44 +20,13 @@
 		</select>
 
 		<input type="text" name="content">
-		<input type="hidden" name="action" value="insert">
 
-		<button type="submit">送信</button>
+		<button type="submit">登録</button>
 	</form>
 
-	<h2>日記一覧</h2>
+	<br>
 
-	<p>{{ records|length }} 件</p>
+	<a href="/list">→一覧に進む</a>
 
-	<table border="1">
-		<tr>
-				<th>記録日</th>
-				<th>気持ち</th>
-				<th>日記</th>
-		</tr>
-
-		{% for record in records %}
-		<tr>
-			<td>{{record.created_at}}</td>
-			<td>{{record.mood}}</td>
-			<td>{{record.content}}</td>
-			<td>
-				<form method="POST">
-					<label>更新内容：</label>
-					<input type="text" name="update_content">
-					<input type="hidden" name="update_id" value="{{ record.id }}">
-					<input type="hidden" name="action" value="update">
-                	<button type="submit">更新</button>
-				</form>
-			</td>
-			<td>
-				<form method="POST">
-					<input type="hidden" name="delete_id" value="{{ record.id }}">
-					<input type="hidden" name="action" value="delete">
-                	<button type="submit">削除</button>
-				</form>
-			</td>
-		</tr>
-		{% endfor %}
 </body>
 </html>

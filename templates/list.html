@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="UTF-8">
+	<title>Diary App</title>
+</head>
+
+<body>
+        <h1>Tell me how you feel</h1>
+        <p>自分の気持ちを記録しよう</p>
+
+	<h2>日記一覧</h2>
+
+	<p>{{ records|length }} 件</p>
+
+	<table border="1">
+		<tr>
+				<th>記録日</th>
+				<th>気持ち</th>
+				<th>日記</th>
+                                <th>更新・削除</th>
+		</tr>
+
+		{% for record in records %}
+		<tr>
+			<td>{{record.created_at}}</td>
+			<td>{{record.mood}}</td>
+			<td>{{record.content}}</td>
+			<td>
+				<form action="/update/{{record.id}}" method="POST">
+					<label>更新内容：</label>
+					<input type="text" name="update_content">
+                	<button type="submit">更新</button>
+				</form>
+			</td>
+			<td>
+				<form action="/delete/{{record.id}}" method="POST">
+                	<button type="submit">削除</button>
+				</form>
+			</td>
+		</tr>
+		{% endfor %}
+
+        <a href="/">←入力フォームに戻る</a>
+
+</body>
+</html>

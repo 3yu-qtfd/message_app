@@ -3,47 +3,38 @@ from mysql import init_db, write_diary, show_diary, delete_diary, update_diary
 
 app = Flask(__name__)
 
-@app.route("/", methods=["POST", "GET"])
-def result():
-    if request.method == "POST":
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
 
-        #入力・更新・削除の種類をactionにセット
-        action = request.form["action"]
+@app.route("/write", methods=["POST"])
+def write():
+    input_mood = request.form["mood"]
+    input_content = request.form["content"]
+    write_diary(input_mood, input_content)
 
-        if action == "insert":
-            #画面で選択した「気持ち」をinput_moodにセット
-            input_mood = request.form["mood"]
+    return redirect(url_for("list"))
 
-            #画面で入力した「日記内容」をinput_contentにセット
-            input_content = request.form["content"]
-
-            #input_moodをDBの関数write_diaryに渡す
-            write_diary(input_mood, input_content)
-
-        elif action == "delete":
-            #画面で選択したレコードのIDをdelete_idにセット
-            delete_id = request.form["delete_id"]
-
-            #delete_idをDBの関数delete_diaryに渡す
-            delete_diary(delete_id)
-
-        elif action == "update":
-            update_id = request.form["update_id"]
-
-            update_content = request.form["update_content"]
-
-            update_diary(update_content, update_id)
-
-    #テーブル作成
-    #init_db()
-
-    #DBの関数show_diaryから受け取った値をreturned_recordにセット
+@app.route("/list", methods=["GET"])
+def list():
     returned_record = show_diary()
 
     #index.htmlに、recordsに格納したreturned_recordの値を渡す
     return render_template(
-        "index.html",
+        "list.html",
         records=returned_record)
 
-#アプリ実行
+@app.route("/update/<int:id>", methods=["POST"])
+def update(id):
+    update_content = request.form["update_content"]
+    update_diary(update_content, id)
+
+    return redirect(url_for("list"))
+
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete(id):
+    delete_diary(id)
+
+    return redirect(url_for("list"))
+
 app.run(host="0.0.0.0")
