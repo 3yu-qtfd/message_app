@@ -1,0 +1,12 @@
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: Change the timezone
+      community.general.timezone:
+        name: Asia/Tokyo

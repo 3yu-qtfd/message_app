@@ -7,8 +7,7 @@
 - フロントエンド：HTML
 - バックエンド：Python Flask
 - データベース：MySQL 8.4.8
-- ゲストOS：Ubuntu 24.4
-- ホストOS：Windows11
+- インフラ(AWS)：EC2, RDS, Route53, ACM
 
 ## 構成図
 ![diagram](./images/diagram.png)
@@ -16,4 +15,3 @@
 ## 画面イメージ
 ![top-page](./images/top.png)
 ![list-page](./images/list.png)
-
