@@ -1,0 +1,5 @@
+- name: Apply Roles to target node
+  hosts: target
+  become: yes
+  roles:
+    - init
