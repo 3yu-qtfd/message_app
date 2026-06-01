@@ -11,7 +11,3 @@
 
 ## 構成図
 ![diagram](./images/diagram.png)
-
-## 画面イメージ
-![top-page](./images/top.png)
-![list-page](./images/list.png)
