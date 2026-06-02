@@ -1,0 +1,24 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mariadb
+- name: Install required Python package
+  ansible.builtin.pip:
+    name:
+      - pymysql
+    state: present
+    virtualenv: "{{ venv_dir }}"
+
+- name: Install required package
+  ansible.builtin.dnf:
+    name:
+      - mariadb105
+    state: present
+
+# DB credentials are encrypted by ansible-vault
+- name: Create application database
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    state: present
+    login_host: "{{ db_host }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_password }}"

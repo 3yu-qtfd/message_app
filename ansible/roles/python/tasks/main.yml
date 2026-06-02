@@ -1,0 +1,24 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for python
+
+#Python version is specified in ansible.cfg
+
+- name: Create Python virtual environment
+  ansible.builtin.command:
+    chdir: "{{ app_dir }}/app"
+    cmd: python3 -m venv venv
+
+- name: Upgrade pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ venv_dir }}"
+
+- name: Install Python packages
+  ansible.builtin.pip:
+    name:
+      - flask
+      - python-dotenv
+    state: present
+    virtualenv: "{{ venv_dir }}"
