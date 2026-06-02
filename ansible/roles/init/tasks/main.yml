@@ -19,12 +19,6 @@
 - name: Clone repository
   ansible.builtin.git:
     repo: https://github.com/3yu-qtfd/message_app.git
-    dest: "{{ app_directory }}"
+    dest: "{{ app_dir }}"
     version: main
     accept_hostkey: yes
-
-- name: Create Python virtual environment
-  ansible.builtin.command:
-    cmd: python3 -m venv .venv
-    chdir: "{{ app_directory }}"
-    creates: "{{ app_directory }}/.venv"
