@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from mysql import init_db, write_diary, show_diary, delete_diary, update_diary
+import boto3, json
 
 app = Flask(__name__)
 
@@ -12,6 +13,24 @@ def write():
     input_mood = request.form["mood"]
     input_content = request.form["content"]
     write_diary(input_mood, input_content)
+
+    eventbridge = boto3.client("events")
+
+    response = eventbridge.put_events(
+        Entries=[
+            {
+                "EventBusName": "diary_app",
+                "Source": "diary.app",
+                "DetailType": "diary.created",
+                "Detail": json.dumps({
+                    "mood": input_mood,
+                    "content": input_content
+                })
+            }
+        ]
+    )
+
+    print(response)
 
     return redirect(url_for("list"))
 
@@ -37,4 +56,4 @@ def delete(id):
 
     return redirect(url_for("list"))
 
-#app.run(host="0.0.0.0")
+app.run(host="0.0.0.0")
