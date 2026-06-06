@@ -14,9 +14,9 @@ def write():
     input_content = request.form["content"]
     write_diary(input_mood, input_content)
 
-    eventbridge = boto3.client("events")
+    client = boto3.client("events")
 
-    response = eventbridge.put_events(
+    response = client.put_events(
         Entries=[
             {
                 "EventBusName": "diary_app",
