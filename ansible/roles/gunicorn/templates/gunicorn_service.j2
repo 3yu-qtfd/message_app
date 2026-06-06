@@ -5,9 +5,9 @@ After=network.target
 [Service]
 User=ec2-user
 Group=ec2-user
-WorkingDirectory=/home/ec2-user/message_app
+WorkingDirectory=/home/ec2-user/message_app/app
 
-ExecStart=/home/ec2-user/message_app/venv/bin/gunicorn -c /home/ec2-user/message_app/gunicorn_conf.py app:app
+ExecStart=/home/ec2-user/message_app/venv/bin/gunicorn -c /home/ec2-user/message_app/app/gunicorn_conf.py app:app
 
 Restart=always
 

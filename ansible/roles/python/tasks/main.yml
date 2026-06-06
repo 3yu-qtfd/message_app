@@ -6,7 +6,7 @@
 
 - name: Create Python virtual environment
   ansible.builtin.command:
-    chdir: "{{ app_dir }}/app"
+    chdir: "{{ app_dir }}"
     cmd: python3 -m venv venv
 
 - name: Upgrade pip
