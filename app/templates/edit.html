@@ -21,7 +21,15 @@
                         
                         <h2>日記編集</h2>
 
-                        <p>ID={{ record.id }}</p>
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
 
 						<form action="/edit/{{record.id}}" method="POST">
 							<div class="mb-3">

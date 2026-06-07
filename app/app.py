@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
-from mysql import init_db, write_diary, show_diary, delete_diary, get_record_by_id, edit_diary
+from flask import Flask, render_template, request, redirect, url_for, flash
+from datetime import date
+from mysql import init_db, write_diary, show_diary, delete_diary, get_record_by_id, edit_diary, get_record_for_today
 import boto3, json
 
 app = Flask(__name__)
+
+app.secret_key = "diary-app-secret-key"
 
 moods = [
     ("happy", "嬉しい"),
@@ -19,29 +22,36 @@ def index():
 
 @app.route("/write", methods=["POST"])
 def write():
-    input_mood = request.form["mood"]
-    input_content = request.form["content"]
-    write_diary(input_mood, input_content)
+    #今日日付のレコードがあるか確認
+    today_record = get_record_for_today()
 
-    client = boto3.client("events")
+    if today_record:
+        flash("今日の日記は既に登録済みです")
+        return redirect("/")
 
-    response = client.put_events(
-        Entries=[
-            {
-                "EventBusName": "diary_app",
-                "Source": "diary.app",
-                "DetailType": "diary.created",
-                "Detail": json.dumps({
-                    "mood": input_mood,
-                    "content": input_content
-                })
-            }
-        ]
-    )
+    else:
+        input_mood = request.form["mood"]
+        input_content = request.form["content"]
+        write_diary(input_mood, input_content)
 
-    print(response)
+        client = boto3.client("events")
+        response = client.put_events(
+            Entries=[
+                {
+                    "EventBusName": "diary_app",
+                    "Source": "diary.app",
+                    "DetailType": "diary.created",
+                    "Detail": json.dumps({
+                        "mood": input_mood,
+                        "content": input_content
+                    })
+                }
+            ]
+        )
+        #EventBridgeデバッグ
+        print(response)
 
-    return redirect(url_for("list"))
+        return redirect(url_for("list"))
 
 @app.route("/list", methods=["GET"])
 def list():
@@ -56,27 +66,24 @@ def edit(edit_id):
     if request.method == "POST":
         edit_mood = request.form["edit_mood"]
         edit_content = request.form["edit_content"]
-
-        #print(edit_content)
         
         edit_diary(edit_mood, edit_content, edit_id)
+        flash("日記を更新しました！")
+
         return redirect(f"/edit/{edit_id}")
 
     elif request.method == "GET":
         returned_record = get_record_by_id(edit_id)
-
-        #print(returned_record)
 
         return render_template(
             "edit.html",
             record=returned_record,
             moods=moods)
 
-    #return redirect(url_for("list"))
-
 @app.route("/delete/<int:delete_id>", methods=["POST"])
 def delete(delete_id):
     delete_diary(delete_id)
+    flash("日記を削除しました！")
 
     return redirect(url_for("list"))
 

@@ -22,7 +22,6 @@ def init_db():
 
     try:
         with connection.cursor() as cursor:
-
             sql = """
             CREATE TABLE IF NOT EXISTS diary (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,20 +39,38 @@ def init_db():
     finally:
         connection.close()
 
-#INSERT
+#INSERT　日付チェック処理
+def get_record_for_today():
+    connection = get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+            SELECT `created_at`
+            FROM `diary`
+            WHERE DATE(created_at) = CURDATE();
+            """
+            cursor.execute(sql)
+
+            fetched_record = cursor.fetchone()
+            return fetched_record
+        
+    finally:
+        connection.close()
+
+#INSERT処理
 def write_diary(input_mood, input_content):
     connection = get_connection()
 
     try:
         with connection.cursor() as cursor:
-
             sql = """
             INSERT INTO `diary` (`mood`, `content`)
             VALUES(%s, %s)
             """
             #デバッグ
-            print(f"入力値: {input_mood}")
-            print(f"入力値: {input_content}")
+            #print(f"入力値: {input_mood}")
+            #print(f"入力値: {input_content}")
 
             cursor.execute(sql, (input_mood, input_content))
 
@@ -62,13 +79,12 @@ def write_diary(input_mood, input_content):
     finally:
         connection.close()
 
-#SELECT
+#SELECT処理
 def show_diary():
     connection = get_connection()
 
     try:
         with connection.cursor() as cursor:
-
             sql = """
             SELECT * FROM `diary`
             """
@@ -80,7 +96,7 @@ def show_diary():
     finally:
         connection.close()
 
-#UPDATE レコード取得
+#UPDATE レコード取得処理
 def get_record_by_id(id):
     connection = get_connection()
 
@@ -101,7 +117,7 @@ def get_record_by_id(id):
     finally:
         connection.close()        
 
-#UPDATE
+#UPDATE処理
 def edit_diary(edit_mood, edit_content, edit_id):
     connection = get_connection()
 
@@ -119,7 +135,7 @@ def edit_diary(edit_mood, edit_content, edit_id):
     finally:
         connection.close()
 
-#DELETE
+#DELETE処理
 def delete_diary(delete_id):
     connection = get_connection()
 
