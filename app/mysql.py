@@ -80,6 +80,45 @@ def show_diary():
     finally:
         connection.close()
 
+#UPDATE レコード取得
+def get_record_by_id(id):
+    connection = get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+            SELECT `id`, `mood`, `content`
+            FROM `diary`
+            WHERE `id` = %s
+            """
+            cursor.execute(sql, (id,))
+
+            connection.commit()
+
+            fetched_record = cursor.fetchone()
+            return fetched_record
+
+    finally:
+        connection.close()        
+
+#UPDATE
+def edit_diary(edit_mood, edit_content, edit_id):
+    connection = get_connection()
+
+    try:
+        with connection.cursor() as cursor:
+            sql = """
+            UPDATE `diary`
+            SET `mood` = %s, `content` = %s
+            WHERE `id` = %s
+            """
+            cursor.execute(sql, (edit_mood, edit_content, edit_id))
+
+            connection.commit()
+    
+    finally:
+        connection.close()
+
 #DELETE
 def delete_diary(delete_id):
     connection = get_connection()
@@ -92,24 +131,6 @@ def delete_diary(delete_id):
             WHERE `id` = %s
             """
             cursor.execute(sql, (delete_id,))
-
-            connection.commit()
-    
-    finally:
-        connection.close()
-
-#UPDATE
-def update_diary(update_content, update_id):
-    connection = get_connection()
-
-    try:
-        with connection.cursor() as cursor:
-            sql = """
-            UPDATE `diary`
-            SET `content` = %s
-            WHERE `id` = %s
-            """
-            cursor.execute(sql, (update_content, update_id))
 
             connection.commit()
     
